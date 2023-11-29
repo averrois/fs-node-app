@@ -9,7 +9,7 @@ const fs = require('fs/promises');
         console.log('The File Changed');
         
         // Getting the size of the file
-        const fileSize = (await commandFileHandler.stat()).size();
+        const fileSize = (await commandFileHandler.stat()).size;
 
         // Reading the Content for the file & allocating buffer size
         const content = await commandFileHandler.read(Buffer.alloc(fileSize));
