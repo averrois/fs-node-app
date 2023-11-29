@@ -7,7 +7,7 @@ const fs = require('fs/promises');
     const watcher = fs.watch("./command.txt");
     for await (const event of watcher) {
         console.log('The File Changed');
-        
+
         // Getting the size of the file
         const fileSize = (await commandFileHandler.stat()).size;
 
@@ -18,7 +18,13 @@ const fs = require('fs/promises');
         const position = 0;
 
         // Reading the Content for the file & allocating buffer size
-        const content = await commandFileHandler.read(buff, offset, length, position);
-        // console.log(content)
+        const content = await commandFileHandler.read(
+            buff,
+            offset,
+            length,
+            position
+        );
+        console.log(content)
+        console.log(position, offset, length);
     }
 })()
