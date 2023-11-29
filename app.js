@@ -11,8 +11,14 @@ const fs = require('fs/promises');
         // Getting the size of the file
         const fileSize = (await commandFileHandler.stat()).size;
 
+        // Create Buffer, Offset, Lenght, Position. Because they are and arg of read fun
+        const buff = Buffer.alloc(fileSize);
+        const offset = 0;
+        const length = buff.byteLength;
+        const position = 0;
+
         // Reading the Content for the file & allocating buffer size
-        const content = await commandFileHandler.read(Buffer.alloc(fileSize));
+        const content = await commandFileHandler.read(buff, offset, length, position);
         // console.log(content)
     }
 })()
