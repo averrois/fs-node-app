@@ -19,7 +19,7 @@ const fs = require('fs/promises');
         // The position where we want to start reading file from.
         const position = 0;
 
-        // Reading the Content for the file & allocating buffer size
+        // Reading the whole Content for the file from start to end 
         const content = await commandFileHandler.read(
             buff,
             offset,
