@@ -26,6 +26,7 @@ const fs = require('fs/promises');
             length,
             position
         );
+        const content = buff.toString();
     })
 
     // Watching the file
