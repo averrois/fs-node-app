@@ -20,13 +20,12 @@ const fs = require('fs/promises');
         const position = 0;
 
         // Reading the whole Content for the file from start to end 
-        const content = await commandFileHandler.read(
+        await commandFileHandler.read(
             buff,
             offset,
             length,
             position
         );
-        console.log(content)
     })
 
     // Watching the file
