@@ -1,10 +1,20 @@
+
+const { log } = require('console');
 const fs = require('fs/promises');
 
 (async () => {
     // Function to create a file with in a patch
-    const createFile = (path) => {
-        fs.appendFile(path, 'New File');
-        console.log('done');
+    const createFile = async (path) => {
+        let existingFileHandle;
+        // if the file is already exist
+        try {
+            existingFileHandle = await fs.open(path, 'r')
+            console.log(`The file ${path} already exist!`)
+        } catch (e) {
+            const newFileHandle = await fs.open(path, 'w');
+            return newFileHandle;
+        }
+        existingFileHandle.close();
     }
 
     // Commands
@@ -40,7 +50,7 @@ const fs = require('fs/promises');
 
         if(command.includes(CRETE_FILE)) {
             const filePath = command.substring(CRETE_FILE + 1);
-            createFile('./test.txt');
+            createFile('test.txt');
 
         }
     })
