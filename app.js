@@ -68,7 +68,9 @@ const fs = require('fs/promises');
             const filePath = command.substring(CRETE_FILE.length + 1);
             createFile(filePath);
 
-        } else if (command.includes(DELETE_FILE)) {
+        } 
+        // delete file <path>
+        else if (command.includes(DELETE_FILE)) {
             const filePath = command.substring(DELETE_FILE.length + 1);
             console.log(`This is the filePath: ${filePath}`)
             deleteFile(filePath);
