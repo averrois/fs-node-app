@@ -13,7 +13,7 @@ const fs = require('fs/promises');
         // if the file is already exist
         try {
             const existingFileHandle = await fs.open(path, 'r')
-            existingFileHandle.close();
+            await existingFileHandle.close();
             console.log(`The file ${path} already exist!`)
         } catch (e) {
             const newFileHandle = await fs.open(path, 'w');
@@ -26,7 +26,7 @@ const fs = require('fs/promises');
     const deleteFile = async (path) => {
         try {
             const existingFileHandle = await fs.open(path, 'r');
-            existingFileHandle.close();
+            await existingFileHandle.close();
             await fs.unlink(path);
             console.log(`The file ${path} deleted!`);
         } catch (e) {
@@ -34,6 +34,18 @@ const fs = require('fs/promises');
         }
     }
 
+    // Rename File
+    const renameFile = async (oldPath, newPath) => {
+        try {
+            const existingFileHandle = await fs.open(oldPath, 'r');
+            await existingFileHandle.close();
+            await fs.rename(oldPath, newPath);
+            console.log(`Done`);
+
+        } catch (error) {
+            console.error('An error occurred:', error.message);
+        }
+    }
 
 
     // Open the File 'r' flag is for just knwing that we are only attempt to read the file.
@@ -64,16 +76,23 @@ const fs = require('fs/promises');
         const command = buff.toString();
 
         // create file <path>
-        if(command.includes(CRETE_FILE)) {
+        if (command.includes(CRETE_FILE)) {
             const filePath = command.substring(CRETE_FILE.length + 1);
             createFile(filePath);
 
-        } 
+        }
         // delete file <path>
         else if (command.includes(DELETE_FILE)) {
             const filePath = command.substring(DELETE_FILE.length + 1);
             console.log(`This is the filePath: ${filePath}`)
             deleteFile(filePath);
+        }
+        // rename file <path> to <new-path>
+        else if (command.includes(RENAME_FILE)) {
+            const _idx = command.indexOf(" to ");
+            const oldPath = command.substring(RENAME_FILE.length + 1, _idx);
+            const newPath = command.substring(_idx + 4);
+            renameFile(oldPath, newPath);
         }
     })
 

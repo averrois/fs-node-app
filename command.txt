@@ -1,1 +1,1 @@
-delete file ./test.txt
+rename file ./test.txt to ./next.txt
