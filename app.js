@@ -40,13 +40,15 @@ const fs = require('fs/promises');
     // Rename File
     const renameFile = async (oldPath, newPath) => {
         try {
-            const existingFileHandle = await fs.open(oldPath, 'r');
-            await existingFileHandle.close();
             await fs.rename(oldPath, newPath);
-            console.log(`Done`);
+            console.log(`Done.`);
 
         } catch (error) {
-            console.error('An error occurred:', error.message);
+            if (error.code === "ENOENT") {
+                console.log("The file or destination doesn't exist");
+            } else {
+                console.log(`An error occured: ${error.message}`);
+            }
         }
     }
 
