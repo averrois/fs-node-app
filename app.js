@@ -1,6 +1,16 @@
 const fs = require('fs/promises');
 
 (async () => {
+    // Function to create a file with in a patch
+    const createFile = (path) => {
+        fs.appendFile(path, 'New File');
+        console.log('done');
+    }
+
+    // Commands
+    const CRETE_FILE = "create file";
+
+
     // Open the File 'r' flag is for just knwing that we are only attempt to read the file.
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
@@ -26,7 +36,13 @@ const fs = require('fs/promises');
             length,
             position
         );
-        const content = buff.toString();
+        const command = buff.toString();
+
+        if(command.includes(CRETE_FILE)) {
+            const filePath = command.substring(CRETE_FILE + 1);
+            createFile('./test.txt');
+
+        }
     })
 
     // Watching the file
