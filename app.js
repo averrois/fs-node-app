@@ -47,6 +47,19 @@ const fs = require('fs/promises');
         }
     }
 
+    //Update File
+    const updateFile = async (path, content) => {
+        try {
+            const existingFileHandle = await fs.open(path, 'r');
+            await fs.writeFile(path, content)
+            console.log(`This is Content: ${content}`);
+            console.log(`This is Path: ${path}"`);
+            await existingFileHandle.close();
+            console.log(`The file ${path} has been updated!`);
+        } catch (error) {
+            console.log(`An error occurred: ${error.message}`);
+        }
+    }
 
     // Open the File 'r' flag is for just knwing that we are only attempt to read the file.
     const commandFileHandler = await fs.open('./command.txt', 'r');
@@ -93,6 +106,14 @@ const fs = require('fs/promises');
             const oldPath = command.substring(RENAME_FILE.length + 1, _idx);
             const newPath = command.substring(_idx + 4);
             renameFile(oldPath, newPath);
+        }
+        // updat file <path> content: <content>
+        else if (command.includes(UPDATE_FILE)) {
+            const _idx = command.indexOf(" content:");
+            const filePath = command.substring(UPDATE_FILE.length + 1, _idx);
+            const content = command.substring(_idx + 10);
+            updateFile(filePath, content);
+
         }
     })
 
