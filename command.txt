@@ -1,1 +1,1 @@
-update file ./test.txt content: I am here now
+delete file ./test.txt

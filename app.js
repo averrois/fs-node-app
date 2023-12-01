@@ -25,8 +25,6 @@ const fs = require('fs/promises');
     // Deleting File
     const deleteFile = async (path) => {
         try {
-            const existingFileHandle = await fs.open(path, 'r');
-            await existingFileHandle.close();
             await fs.unlink(path);
             console.log(`The file ${path} deleted!`);
         } catch (e) {
