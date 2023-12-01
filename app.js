@@ -25,6 +25,7 @@ const fs = require('fs/promises');
     // Deleting File
     const deleteFile = async (path) => {
         try {
+            // there is also the `rm` method to delete files, dir...
             await fs.unlink(path);
             console.log(`The file ${path} deleted!`);
         } catch (e) {
