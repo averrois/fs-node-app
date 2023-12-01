@@ -28,7 +28,11 @@ const fs = require('fs/promises');
             await fs.unlink(path);
             console.log(`The file ${path} deleted!`);
         } catch (e) {
-            console.log("This File does not exist!")
+            if (e.code === "ENOENT") {
+                console.log(`The file ${path} does not exist!`);
+            } else {
+                console.log(`An error occurd ${e.message}`);
+            }
         }
     }
 
