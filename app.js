@@ -55,14 +55,16 @@ const fs = require('fs/promises');
     //Update File
     const updateFile = async (path, content) => {
         try {
-            const existingFileHandle = await fs.open(path, 'r');
+            const existingFileHandle = await fs.open(path, 'a');
             await fs.writeFile(path, content)
-            console.log(`This is Content: ${content}`);
-            console.log(`This is Path: ${path}"`);
             await existingFileHandle.close();
             console.log(`The file ${path} has been updated!`);
         } catch (error) {
-            console.log(`An error occurred: ${error.message}`);
+            if (error.code === "ENOENT") {
+                console.log("The file or the content are incorrect!");
+            } else {
+                console.log(`An error occured: ${error.message}`);
+            }
         }
     }
 
