@@ -1,4 +1,4 @@
-# NodeJS Commands Runnder
+# NodeJS Commands Runner
 
 This app will allows you to run your commands that are are wroten in the file `command.txt` like:
 
