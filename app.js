@@ -1,73 +1,77 @@
 const fs = require('fs/promises');
 
+// Commands
+const CRETE_FILE = "create file";
+const DELETE_FILE = "delete file";
+const RENAME_FILE = "rename file";
+const UPDATE_FILE = "update file";
+
+
+// Function to create a file with in a patch
+const createFile = async (path) => {
+    // if the file is already exist
+    if (!path) {
+        const err = "You didn't mentioned a path or file name!"
+        return err;
+    }
+    try {
+        const existingFileHandle = await fs.open(path, 'r')
+        await existingFileHandle.close();
+    } catch (e) {
+        const newFileHandle = await fs.open(path, 'w');
+        console.log('New File is Successfuly created.');
+        newFileHandle.close();
+        console.log(`The file ${path} already exist!`)
+    }
+}
+
+// Deleting File
+const deleteFile = async (path) => {
+    try {
+        // there is also the `rm` method to delete files, dir...
+        await fs.unlink(path);
+        console.log(`The file ${path} deleted!`);
+    } catch (e) {
+        if (e.code === "ENOENT") {
+            console.log(`The file ${path} does not exist!`);
+        } else {
+            console.log(`An error occurd ${e.message}`);
+        }
+    }
+}
+
+// Rename File
+const renameFile = async (oldPath, newPath) => {
+    try {
+        await fs.rename(oldPath, newPath);
+        console.log(`Done.`);
+
+    } catch (error) {
+        if (error.code === "ENOENT") {
+            console.log("The file or destination doesn't exist");
+        } else {
+            console.log(`An error occured: ${error.message}`);
+        }
+    }
+}
+
+//Update File
+const updateFile = async (path, content) => {
+    try {
+        const existingFileHandle = await fs.open(path, 'a');
+        await fs.writeFile(path, content)
+        await existingFileHandle.close();
+        console.log(`The file ${path} has been updated!`);
+    } catch (error) {
+        if (error.code === "ENOENT") {
+            console.log("The file or the content are incorrect!");
+        } else {
+            console.log(`An error occured: ${error.message}`);
+        }
+    }
+}
+
 (async () => {
-    // Commands
-    const CRETE_FILE = "create file";
-    const DELETE_FILE = "delete file";
-    const RENAME_FILE = "rename file";
-    const UPDATE_FILE = "update file";
-
-
-    // Function to create a file with in a patch
-    const createFile = async (path) => {
-        // if the file is already exist
-        try {
-            const existingFileHandle = await fs.open(path, 'r')
-            await existingFileHandle.close();
-            console.log(`The file ${path} already exist!`)
-        } catch (e) {
-            const newFileHandle = await fs.open(path, 'w');
-            console.log('New File is Successfuly created.');
-            newFileHandle.close();
-        }
-    }
-
-    // Deleting File
-    const deleteFile = async (path) => {
-        try {
-            // there is also the `rm` method to delete files, dir...
-            await fs.unlink(path);
-            console.log(`The file ${path} deleted!`);
-        } catch (e) {
-            if (e.code === "ENOENT") {
-                console.log(`The file ${path} does not exist!`);
-            } else {
-                console.log(`An error occurd ${e.message}`);
-            }
-        }
-    }
-
-    // Rename File
-    const renameFile = async (oldPath, newPath) => {
-        try {
-            await fs.rename(oldPath, newPath);
-            console.log(`Done.`);
-
-        } catch (error) {
-            if (error.code === "ENOENT") {
-                console.log("The file or destination doesn't exist");
-            } else {
-                console.log(`An error occured: ${error.message}`);
-            }
-        }
-    }
-
-    //Update File
-    const updateFile = async (path, content) => {
-        try {
-            const existingFileHandle = await fs.open(path, 'a');
-            await fs.writeFile(path, content)
-            await existingFileHandle.close();
-            console.log(`The file ${path} has been updated!`);
-        } catch (error) {
-            if (error.code === "ENOENT") {
-                console.log("The file or the content are incorrect!");
-            } else {
-                console.log(`An error occured: ${error.message}`);
-            }
-        }
-    }
-
     // Open the File 'r' flag is for just knwing that we are only attempt to read the file.
     const commandFileHandler = await fs.open('./command.txt', 'r');
 
@@ -130,3 +134,10 @@ const fs = require('fs/promises');
         commandFileHandler.emit("change");
     }
 })()
+
+module.exports = {
+    createFile,
+    deleteFile,
+    updateFile,
+    renameFile
+};
